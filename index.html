@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顏子恩 (Caelan) | AI Engineer Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 核心變數 (深色科技主題) --- */
+        :root {
+            --bg-primary: #0a0a0c;
+            --bg-secondary: #121214;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-color: #00f2ff;
+            --sidebar-width: 280px;
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* --- 側邊欄 --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(0, 242, 255, 0.1);
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .profile-area { text-align: center; margin-bottom: 40px; }
+        .avatar-container {
+            width: 140px; height: 140px; margin: 0 auto 20px;
+            position: relative; border-radius: 50%; padding: 3px;
+            background: linear-gradient(45deg, #ff0000, #00f2ff, #ff00c8, #00ff00);
+            background-size: 400%;
+            animation: glowing 8s linear infinite;
+        }
+        @keyframes glowing { 0% { background-position: 0 0; } 50% { background-position: 400% 0; } 100% { background-position: 0 0; } }
+        
+        .avatar-container img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+        }
+        .profile-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 5px; letter-spacing: 1px; }
+        .profile-role { font-family: var(--font-code); color: var(--accent-color); font-size: 0.9rem; background: rgba(0, 242, 255, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; }
+
+        .nav-menu { list-style: none; flex-grow: 1; }
+        .nav-link {
+            display: flex; align-items: center; gap: 15px;
+            padding: 12px 20px;
+            color: var(--text-secondary); text-decoration: none;
+            border-radius: 12px; transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .nav-link i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-link:hover, .nav-link.active { background-color: rgba(0, 242, 255, 0.1); color: var(--accent-color); }
+
+        .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); text-decoration: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .social-btn:hover { border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); }
+
+        /* --- 主要內容區 --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1; padding: 50px; max-width: 1200px;
+        }
+
+        section { margin-bottom: 80px; scroll-margin-top: 50px; }
+        .section-title {
+            font-size: 2rem; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; color: var(--text-primary); position: relative; padding-left: 20px;
+        }
+        .section-title::before { content: ""; position: absolute; left: 0; height: 70%; width: 5px; background: var(--accent-color); border-radius: 5px; box-shadow: 0 0 10px var(--accent-color); }
+
+        .about-text { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.8; margin-bottom: 30px; background: var(--bg-secondary); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .skill-tag {
+            background: rgba(0, 242, 255, 0.05); color: var(--text-primary); padding: 8px 16px; border-radius: 8px;
+            font-family: var(--font-code); font-size: 0.9rem; border: 1px solid var(--accent-color); transition: 0.3s;
+        }
+        .skill-tag:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); }
+
+        /* 專案卡片 */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .project-card {
+            background: var(--bg-secondary); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s;
+        }
+        .project-card:hover { transform: translateY(-10px); border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15); }
+        
+        .project-img-box { 
+            height: 220px; /* 增加高度 */
+            background: #000; /* 純黑背景，讓圖表顯示更清楚 */
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        /* 關鍵修改: object-fit: contain */
+        .project-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 確保完整顯示，不裁切 */
+            transition: 0.5s;
+        }
+        .project-card:hover .project-img-box img { transform: scale(1.02); }
+
+        .project-placeholder-text { font-family: var(--font-code); color: rgba(255,255,255,0.1); font-weight: 700; letter-spacing: 2px; }
+        .project-info { padding: 25px; }
+        .project-title { font-size: 1.2rem; margin-bottom: 10px; }
+        .project-tech { font-family: var(--font-code); color: var(--accent-color); font-size: 0.8rem; margin-bottom: 15px; }
+        .project-desc { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* 經歷時間軸 */
+        .timeline { border-left: 3px solid rgba(255,255,255,0.1); padding-left: 30px; margin-left: 10px; }
+        .timeline-item { position: relative; margin-bottom: 40px; }
+        .timeline-item::before {
+            content: ""; position: absolute; left: -38px; top: 5px; width: 14px; height: 14px;
+            background: var(--bg-primary); border: 3px solid var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color);
+        }
+        .time-badge { font-family: var(--font-code); color: var(--accent-color); font-size: 0.9rem; margin-bottom: 5px; display: inline-block; background: rgba(0, 242, 255, 0.1); padding: 2px 10px; border-radius: 4px; }
+        .job-title { font-size: 1.3rem; margin-bottom: 5px; color: var(--text-primary); }
+        .company { color: var(--text-secondary); margin-bottom: 15px; font-size: 1rem; }
+        .job-desc ul { padding-left: 20px; color: var(--text-secondary); }
+
+        /* 證書卡片 */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .cert-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .cert-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 20px rgba(0, 242, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        .cert-img-box {
+            height: 200px;
+            background-color: #000; /* 背景改為黑色，增加對比 */
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        /* 關鍵修改: object-fit: contain */
+        .cert-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 證書完整顯示 */
+            transition: 0.5s;
+        }
+        .cert-card:hover .cert-img-box img { transform: scale(1.02); }
+        .cert-title {
+            padding: 15px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: center;
+            background: rgba(255,255,255,0.02);
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 附加經歷 */
+        .appendix-list { display: flex; flex-direction: column; gap: 30px; }
+        .appendix-item {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .appendix-item:hover { border-color: var(--accent-color); }
+        .appendix-img {
+            flex-shrink: 0;
+            width: 300px; /* 稍微加寬 */
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 關鍵修改: object-fit: contain */
+        .appendix-img img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* 照片完整顯示，不裁切 */
+            transition: 0.5s; 
+        }
+        .appendix-item:hover .appendix-img img { transform: scale(1.02); }
+        
+        .appendix-placeholder {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.2); font-size: 3rem;
+        }
+        .appendix-content { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
+        .appendix-content h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--accent-color); }
+        .appendix-content p { color: var(--text-secondary); line-height: 1.7; }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
+            .profile-area, .social-links span { display: none; }
+            .nav-link { justify-content: center; padding: 15px; }
+            .nav-link span { display: none; }
+            .main-content { margin-left: 80px; padding: 30px; }
+            .appendix-item { flex-direction: column; }
+            .appendix-img { width: 100%; height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="profile-area">
+            <div class="avatar-container">
+                <img src="圖片_20250827160650.jpg" alt="Caelan">
+            </div>
+            <h2 class="profile-name">顏子恩 (Caelan)</h2>
+            <span class="profile-role">&lt; 網頁系統開發 / &gt;</span>
+           
+            <span class="profile-role">&lt; 軟體開發 / &gt;</span>
+            
+            <span class="profile-role">&lt; 機器學習 / &gt;</span>
+            
+            <span class="profile-role">&lt; 大語言模型 / &gt;</span>
+
+           
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>首頁</span></a></li>
+            <li class="nav-item"><a href="#about" class="nav-link"><i class="fas fa-user"></i><span>關於我</span></a></li>
+            <li class="nav-item"><a href="#portfolio" class="nav-link"><i class="fas fa-laptop-code"></i><span>專案</span></a></li>
+            <li class="nav-item"><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i><span>經歷</span></a></li>
+            <li class="nav-item"><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i><span>證書成就</span></a></li>
+        </ul>
+
+        <div class="social-links">
+            <a href="mailto:jerry20021014@gmail.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+            <a href="tel:0935627598" class="social-btn"><i class="fas fa-phone"></i></a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <section id="home" style="height: 80vh; display: flex; flex-direction: column; justify-content: center;">
+            <h1 style="font-size: 4rem; line-height: 1.2; margin-bottom: 20px;">
+                Hello, I'm <span style="color: var(--accent-color);">Caelan</span>.<br>
+                AI Application Developer.
+            </h1>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 40px;">
+                專注於將大語言模型 (LLM) 與 RAG 技術轉化為實際的商業解決方案。具備全端開發能力與國際實習視野。
+            </p>
+            <a href="#portfolio" style="width: fit-content; padding: 12px 30px; background: var(--accent-color); color: #000; text-decoration: none; border-radius: 30px; font-weight: 700; transition: 0.3s;">
+                查看專案 <i class="fas fa-arrow-right"></i>
+            </a>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title"><i class="fas fa-user"></i> 關於我</h2>
+            <div class="about-text">
+                <p>我叫顏子恩，畢業於亞洲大學資訊傳播碩士，主要專注在人工智慧和大語言模型應用開發。
+我熟悉大語言模型應用、網頁系統開發和資料庫處理。曾在馬來西亞光華日報實習，負責網頁系統開發，解決效能與安全問題，也參與過私人醫療診所的 ERP 產學合作專案，負責介面設計、資料流程優化與簡訊通知功能開發。這些經驗讓我熟悉跨領域系統整合，並學會如何與不同團隊有效溝通合作。
+我的碩士論文是做「RAG 系統結合虛擬數位人物」，開發完整的問答系統與企業知識整合平台，提升資訊檢索精準度和使用者互動體驗。
+我認為自己有三個特質：重視溝通與協作、能獨立完成任務，以及勇於挑戰新技術。
+</p>
+            </div>
+            <h3 style="margin-bottom: 20px;">技術棧 (Tech Stack)</h3>
+            <div class="skills-grid">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">RAG / LLM</span>
+                <span class="skill-tag">ChromaDB</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">C#</span>
+                <span class="skill-tag">PHP</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">Azure AI-900</span>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2 class="section-title"><i class="fas fa-laptop-code"></i> 精選專案</h2>
+            <div class="portfolio-grid">
+                <div class="project-card">
+                    <div class="project-img-box">
+
+                         <img src="螢幕擷取畫面 2025-06-09 195610.png" alt="RAG System Architecture">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">RAG 企業知識問答系統</h3>
+                        <p class="project-tech">Python · LangChain · LLM</p>
+                        <p class="project-desc">碩士研究成果。整合本地 LLM 與向量資料庫，建立高準確度的企業內部知識檢索增強生成系統。</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img-box">
+                        <img src="圖片_20260122233041.jpg" alt="CNN Face Recognition System">
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">CNN 人臉識別門禁系統</h3>
+                        <p class="project-tech">MATLAB · Deep Learning</p>
+                        <p class="project-desc">使用卷積神經網路訓練人臉模型，實現即時影像辨識與身份驗證，測試準確率達 99% 以上。</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img-box">
+                        <span class="project-placeholder-text">CLINIC ERP</span>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-title">診所 ERP 管理系統</h3>
+                        <p class="project-tech">Full Stack · PHP · MySQL</p>
+                        <p class="project-desc">產學合作計畫。開發包含掛號、病歷管理、庫存與營收報表的綜合管理系統。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2 class="section-title"><i class="fas fa-briefcase"></i> 工作經歷</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="time-badge">2023.08 - 2023.09</span>
+                    <h3 class="job-title">資訊系統工程師 (海外實習)</h3>
+                    <p class="company">光華日報社 | 馬來西亞</p>
+                    <div class="job-desc">
+                        <ul>
+                            <li>負責新聞網站前後端功能開發與維護。</li>
+                            <li>優化資料庫查詢效能，解決高併發時的系統瓶頸。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="time-badge">2023.02 - 2023.07</span>
+                    <h3 class="job-title">系所電腦軟硬體管理</h3>
+                    <p class="company">亞洲大學</p>
+                    <div class="job-desc">
+                        <ul>
+                            <li>管理與維護系上電腦教室與伺服器設備。</li>
+                            <li>協助師生解決各類軟硬體技術問題。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certificates">
+            <h2 class="section-title"><i class="fas fa-certificate"></i> 專業證書與榮譽</h2>
+            <div class="cert-grid">
+                
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="圖片_20250903233912.png" alt="NVIDIA RAG Agents">
+                    </div>
+                    <div class="cert-title">NVIDIA：開發 RAG Agents 認證</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="圖片_20250903234035.jpg" alt="NVIDIA CUDA Python">
+                    </div>
+                    <div class="cert-title">NVIDIA：CUDA Python 加速計算基礎</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="圖片_20251005134709.jpg" alt="Microsoft GenAI">
+                    </div>
+                    <div class="cert-title">Microsoft：生成式 AI 職業技能基礎</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="螢幕擷取畫面 2025-09-03 233604.png" alt="Phi Tau Phi Honor">
+                    </div>
+                    <div class="cert-title">中華民國斐陶斐榮譽學會會員</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="海外實習證明.jpg" alt="Overseas Internship">
+                    </div>
+                    <div class="cert-title">馬來西亞光華日報：海外實習證明</div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-img-box">
+                        <img src="圖片_20250903234052.jpg" alt="Photography Cert">
+                    </div>
+                    <div class="cert-title">Silicon Stone：攝影專業認證</div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="appendices">
+            <h2 class="section-title"><i class="fas fa-medal"></i> 附加經歷</h2>
+            <div class="appendix-list">
+                <div class="appendix-item">
+                    <div class="appendix-img">
+                        <img src="圖片_20260123000322.jpg" >
+                    </div>
+                    <div class="appendix-content">
+                        <h3>台灣鐵人三項完成者</h3>
+                        <p>展現強大的意志力與體能挑戰。包含玉山主峰登頂、單車環島騎行 (9天8夜) 與泳渡日月潭。</p>
+                    </div>
+                </div>
+                <div class="appendix-item">
+                    <div class="appendix-img">
+                          <img src="圖片_20260123000336.jpg" >
+                    </div>
+                    <div class="appendix-content">
+                        <h3>美國 Jordan 籃球營總冠軍</h3>
+                        <p>參與國際級籃球訓練營，在團隊競技中展現合作精神與領導能力，最終與隊友共同贏得總冠軍殊榮。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) current = section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
