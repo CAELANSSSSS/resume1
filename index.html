@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- 核心變數 (深色科技主題) --- */
+        /* --- 核心變數 --- */
         :root {
             --bg-primary: #0a0a0c;
             --bg-secondary: #121214;
@@ -48,7 +48,9 @@
             flex-direction: column;
             border-right: 1px solid rgba(0, 242, 255, 0.1);
             z-index: 100;
-            overflow-y: auto;
+            /* 修改：移除 overflow-y: auto 以防止氣泡框被切掉，改用 visible */
+            overflow: visible; 
+            transition: all 0.3s ease;
         }
 
         .profile-area { text-align: center; margin-bottom: 40px; }
@@ -66,7 +68,11 @@
             border: 3px solid var(--bg-secondary);
         }
         .profile-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 5px; letter-spacing: 1px; }
-        .profile-role { font-family: var(--font-code); color: var(--accent-color); font-size: 0.9rem; background: rgba(0, 242, 255, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; }
+        .profile-role { 
+            font-family: var(--font-code); color: var(--accent-color); font-size: 0.85rem; 
+            background: rgba(0, 242, 255, 0.1); padding: 4px 10px; border-radius: 20px; 
+            display: inline-block; margin-bottom: 5px;
+        }
 
         .nav-menu { list-style: none; flex-grow: 1; }
         .nav-link {
@@ -75,27 +81,80 @@
             color: var(--text-secondary); text-decoration: none;
             border-radius: 12px; transition: 0.3s;
             font-size: 0.95rem;
+            white-space: nowrap;
         }
         .nav-link i { width: 20px; text-align: center; font-size: 1.1rem; }
         .nav-link:hover, .nav-link.active { background-color: rgba(0, 242, 255, 0.1); color: var(--accent-color); }
 
+        /* 社交連結區塊 */
         .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        
+        /* 社交按鈕樣式 */
         .social-btn {
             width: 40px; height: 40px; border-radius: 50%;
             background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
             color: var(--text-secondary); text-decoration: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+            position: relative; /* 為了定位氣泡框 */
+            cursor: pointer;
         }
         .social-btn:hover { border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); }
+
+        /* --- [新增] 氣泡對話框樣式 (Tooltip) --- */
+        .popover {
+            position: absolute;
+            /* 預設位置：圖標右側 */
+            left: 130%; 
+            top: 50%;
+            transform: translateY(-50%) translateX(10px); /* 初始位移，用於動畫 */
+            background-color: var(--text-primary); /* 白底 */
+            color: #000; /* 黑字 */
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: var(--font-code);
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            
+            /* 隱藏狀態 */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 彈跳效果 */
+            z-index: 1000;
+        }
+
+        /* 氣泡的小三角形箭頭 (指向左邊) */
+        .popover::before {
+            content: "";
+            position: absolute;
+            left: -6px; top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px 6px 6px 0;
+            border-style: solid;
+            border-color: transparent var(--text-primary) transparent transparent;
+        }
+
+        /* 滑鼠懸停時顯示 */
+        .social-btn:hover .popover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(0);
+        }
 
         /* --- 主要內容區 --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            flex-grow: 1; padding: 50px; max-width: 1200px;
+            flex-grow: 1; 
+            padding: 50px; 
+            max-width: 1200px; 
+            width: 100%;
+            transition: margin-left 0.3s ease;
         }
 
-        section { margin-bottom: 80px; scroll-margin-top: 50px; }
+        section { margin-bottom: 80px; scroll-margin-top: 80px; }
         .section-title {
-            font-size: 2rem; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; color: var(--text-primary); position: relative; padding-left: 20px;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 30px; display: flex; align-items: center; gap: 15px; color: var(--text-primary); position: relative; padding-left: 20px;
         }
         .section-title::before { content: ""; position: absolute; left: 0; height: 70%; width: 5px; background: var(--accent-color); border-radius: 5px; box-shadow: 0 0 10px var(--accent-color); }
 
@@ -107,38 +166,36 @@
         }
         .skill-tag:hover { background: var(--accent-color); color: #000; box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); }
 
-        /* 專案卡片 */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .project-card {
-            background: var(--bg-secondary); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s;
+        /* 卡片與網格 */
+        .portfolio-grid, .cert-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 30px; 
         }
-        .project-card:hover { transform: translateY(-10px); border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15); }
+        .project-card, .cert-card {
+            background: var(--bg-secondary); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s;
+            display: flex; flex-direction: column;
+        }
+        .project-card:hover, .cert-card:hover { transform: translateY(-10px); border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15); }
         
-        .project-img-box { 
-            height: 220px; /* 增加高度 */
-            background: #000; /* 純黑背景，讓圖表顯示更清楚 */
+        .project-img-box, .cert-img-box { 
+            height: 220px; 
+            background: #000; 
             position: relative; 
             overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            display: flex; align-items: center; justify-content: center; 
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        /* 關鍵修改: object-fit: contain */
-        .project-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* 確保完整顯示，不裁切 */
-            transition: 0.5s;
-        }
-        .project-card:hover .project-img-box img { transform: scale(1.02); }
+        .project-img-box img, .cert-img-box img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; }
+        .project-card:hover .project-img-box img, .cert-card:hover .cert-img-box img { transform: scale(1.02); }
 
-        .project-placeholder-text { font-family: var(--font-code); color: rgba(255,255,255,0.1); font-weight: 700; letter-spacing: 2px; }
-        .project-info { padding: 25px; }
+        .project-info, .cert-title { padding: 25px; flex-grow: 1; }
+        .cert-title { text-align: center; background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        
         .project-title { font-size: 1.2rem; margin-bottom: 10px; }
         .project-tech { font-family: var(--font-code); color: var(--accent-color); font-size: 0.8rem; margin-bottom: 15px; }
         .project-desc { color: var(--text-secondary); font-size: 0.95rem; }
 
-        /* 經歷時間軸 */
         .timeline { border-left: 3px solid rgba(255,255,255,0.1); padding-left: 30px; margin-left: 10px; }
         .timeline-item { position: relative; margin-bottom: 40px; }
         .timeline-item::before {
@@ -150,55 +207,6 @@
         .company { color: var(--text-secondary); margin-bottom: 15px; font-size: 1rem; }
         .job-desc ul { padding-left: 20px; color: var(--text-secondary); }
 
-        /* 證書卡片 */
-        .cert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        .cert-card {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-        .cert-card:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 20px rgba(0, 242, 255, 0.2);
-            transform: translateY(-5px);
-        }
-        .cert-img-box {
-            height: 200px;
-            background-color: #000; /* 背景改為黑色，增加對比 */
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        /* 關鍵修改: object-fit: contain */
-        .cert-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* 證書完整顯示 */
-            transition: 0.5s;
-        }
-        .cert-card:hover .cert-img-box img { transform: scale(1.02); }
-        .cert-title {
-            padding: 15px;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            font-weight: 600;
-            text-align: center;
-            background: rgba(255,255,255,0.02);
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* 附加經歷 */
         .appendix-list { display: flex; flex-direction: column; gap: 30px; }
         .appendix-item {
             display: flex;
@@ -210,40 +218,62 @@
         }
         .appendix-item:hover { border-color: var(--accent-color); }
         .appendix-img {
-            flex-shrink: 0;
-            width: 300px; /* 稍微加寬 */
-            background-color: #000;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-shrink: 0; width: 300px; background-color: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
-        /* 關鍵修改: object-fit: contain */
-        .appendix-img img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; /* 照片完整顯示，不裁切 */
-            transition: 0.5s; 
-        }
+        .appendix-img img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; }
         .appendix-item:hover .appendix-img img { transform: scale(1.02); }
-        
-        .appendix-placeholder {
-            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.2); font-size: 3rem;
-        }
         .appendix-content { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
         .appendix-content h3 { font-size: 1.4rem; margin-bottom: 15px; color: var(--accent-color); }
         .appendix-content p { color: var(--text-secondary); line-height: 1.7; }
 
+        /* --- 響應式調整 --- */
         @media (max-width: 992px) {
             .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
-            .profile-area, .social-links span { display: none; }
+            .profile-area, .social-links .social-btn .popover, .profile-role { display: none; } /* 平板時暫藏氣泡以免擋住 */
+            .social-links { display: none; } /* 平板版面較窄，可選擇隱藏社交連結或調整位置 */
             .nav-link { justify-content: center; padding: 15px; }
             .nav-link span { display: none; }
+            .nav-link i { font-size: 1.4rem; margin: 0; }
             .main-content { margin-left: 80px; padding: 30px; }
             .appendix-item { flex-direction: column; }
             .appendix-img { width: 100%; height: 250px; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%; height: auto; bottom: 0; top: auto;
+                flex-direction: row; border-right: none; border-top: 1px solid rgba(0, 242, 255, 0.2);
+                padding: 10px; background: rgba(18, 18, 20, 0.95); backdrop-filter: blur(10px);
+                justify-content: space-around;
+            }
+            .nav-menu { display: flex; flex-direction: row; justify-content: space-around; width: 100%; }
+            .nav-item { margin: 0; }
+            .nav-link { flex-direction: column; gap: 5px; padding: 5px 10px; font-size: 0.7rem; border-radius: 8px; }
+            .nav-link i { font-size: 1.2rem; }
+            .nav-link span { display: block; font-size: 0.7rem; }
+            .profile-area { display: none; }
+            
+            /* 手機版讓社交連結浮動顯示或整合到其他地方，這裡示範簡單顯示 */
+            .social-links { display: flex; position: absolute; top: -60px; right: 20px; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 30px; gap: 10px; }
+            
+            /* 手機版氣泡位置調整：顯示在上方 */
+            .popover { 
+                left: 50%; top: -45px; 
+                transform: translateX(-50%) translateY(10px); 
+            }
+            .popover::before {
+                left: 50%; top: 100%;
+                transform: translateX(-50%);
+                border-width: 6px 6px 0 6px;
+                border-color: var(--text-primary) transparent transparent transparent;
+            }
+            .social-btn:hover .popover {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .main-content { margin-left: 0; margin-bottom: 70px; padding: 20px; }
+            #home h1 { font-size: clamp(2.5rem, 10vw, 4rem) !important; }
+            .appendix-img { height: 200px; }
         }
     </style>
 </head>
@@ -255,15 +285,12 @@
                 <img src="圖片_20250827160650.jpg" alt="Caelan">
             </div>
             <h2 class="profile-name">顏子恩 (Caelan)</h2>
-            <span class="profile-role">&lt; 網頁系統開發 / &gt;</span>
-           
-            <span class="profile-role">&lt; 軟體開發 / &gt;</span>
-            
-            <span class="profile-role">&lt; 機器學習 / &gt;</span>
-            
-            <span class="profile-role">&lt; 大語言模型 / &gt;</span>
-
-           
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span class="profile-role">&lt; 網頁系統開發 / &gt;</span>
+                <span class="profile-role">&lt; 軟體開發 / &gt;</span>
+                <span class="profile-role">&lt; 機器學習 / &gt;</span>
+                <span class="profile-role">&lt; 大語言模型 / &gt;</span>
+            </div>
         </div>
 
         <ul class="nav-menu">
@@ -275,15 +302,22 @@
         </ul>
 
         <div class="social-links">
-            <a href="mailto:jerry20021014@gmail.com" class="social-btn"><i class="fas fa-envelope"></i></a>
-            <a href="tel:0935627598" class="social-btn"><i class="fas fa-phone"></i></a>
+            <div class="social-btn" title="Email">
+                <i class="fas fa-envelope"></i>
+                <span class="popover">jerry0021014@gmail.com</span>
+            </div>
+            
+            <div class="social-btn" title="Phone">
+                <i class="fas fa-phone"></i>
+                <span class="popover">0935627598</span>
+            </div>
         </div>
     </nav>
 
     <main class="main-content">
         
-        <section id="home" style="height: 80vh; display: flex; flex-direction: column; justify-content: center;">
-            <h1 style="font-size: 4rem; line-height: 1.2; margin-bottom: 20px;">
+        <section id="home" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
+            <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.2; margin-bottom: 20px;">
                 Hello, I'm <span style="color: var(--accent-color);">Caelan</span>.<br>
                 AI Application Developer.
             </h1>
@@ -324,7 +358,6 @@
             <div class="portfolio-grid">
                 <div class="project-card">
                     <div class="project-img-box">
-
                          <img src="螢幕擷取畫面 2025-06-09 195610.png" alt="RAG System Architecture">
                     </div>
                     <div class="project-info">
