@@ -290,6 +290,134 @@
             #home h1 { font-size: clamp(2rem, 8vw, 3rem) !important; }
             .appendix-img { height: 200px; }
         }
+
+
+
+/* 語言切換鈕專業樣式 */
+.lang-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 25px 0;
+}
+
+.lang-label { 
+    font-family: var(--font-code); 
+    font-size: 0.75rem; 
+    color: var(--text-secondary); 
+    font-weight: 700; 
+}
+
+.switch { 
+    position: relative; 
+    display: inline-block; 
+    width: 44px; 
+    height: 22px; 
+}
+
+/* 隱藏預設 Checkbox */
+.switch input { 
+    opacity: 0; 
+    width: 0; 
+    height: 0; 
+}
+
+/* 軌道樣式 */
+.slider {
+    position: absolute; 
+    cursor: pointer; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255,255,255,0.1); 
+    transition: .4s; 
+    border-radius: 34px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* 圓鈕樣式 */
+.slider:before {
+    position: absolute; 
+    content: ""; 
+    height: 14px; 
+    width: 14px; 
+    left: 4px; 
+    bottom: 3px;
+    background-color: var(--text-secondary); 
+    transition: .4s; 
+    border-radius: 50%;
+}
+
+/* 選中狀態 (EN) */
+input:checked + .slider { 
+    background-color: rgba(0, 242, 255, 0.1); 
+    border-color: var(--accent-color); 
+}
+
+input:checked + .slider:before { 
+    transform: translateX(20px); 
+    background-color: var(--accent-color); 
+    box-shadow: 0 0 10px var(--accent-color); 
+}
+
+
+
+/* --- 語言切換與社交連結基礎樣式 --- */
+.lang-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0 25px 0;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: auto; /* 桌機版推向底部 */
+    padding-bottom: 20px;
+}
+
+/* --- 平板與小螢幕適配 (992px 以下) --- */
+@media (max-width: 992px) {
+    .sidebar { padding: 20px 10px; }
+    .switch { transform: scale(0.8); } /* 縮小開關尺寸 */
+    .lang-switch-wrapper { margin: 10px 0; gap: 5px; }
+    .social-links { gap: 10px; }
+}
+
+/* --- 手機版頂部導航適配 (768px 以下) --- */
+@media (max-width: 768px) {
+    .sidebar {
+        height: 70px;
+        padding: 0 15px;
+        justify-content: space-between;
+    }
+
+    .profile-area {
+        flex-direction: row !important;
+        margin: 0;
+        gap: 15px;
+    }
+
+    /* 手機版隱藏職稱標籤與社交連結，以維持簡潔 */
+    .role-tags-container, .social-links {
+        display: none !important;
+    }
+
+    /* 手機版顯示切換鈕並微調位置 */
+    .lang-switch-wrapper {
+        display: flex !important;
+        margin: 0;
+    }
+    
+    .lang-label { font-size: 0.7rem; }
+}
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -300,53 +428,72 @@
                 <img src="圖片_20250827160650.jpg" alt="Caelan">
             </div>
             <h2 class="profile-name">顏子恩 (Caelan)</h2>
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-                <span class="profile-role">&lt; 網頁系統開發 / &gt;</span>
-                <span class="profile-role">&lt; 軟體開發 / &gt;</span>
-                <span class="profile-role">&lt; 機器學習 / &gt;</span>
-                <span class="profile-role">&lt; 大語言模型 / &gt;</span>
-            </div>
+
+
+<div class="lang-switch-wrapper">
+    <span class="lang-label">ZH</span>
+    <label class="switch">
+        <input type="checkbox" id="lang-toggle">
+        <span class="slider"></span>
+    </label>
+    <span class="lang-label">EN</span>
+</div>
+
+
+           <div style="display: flex; flex-direction: column; gap: 5px;">
+    <span class="profile-role">
+        &lt; <span data-key="role-web">網頁系統開發</span> / &gt;
+    </span>
+    <span class="profile-role">
+        &lt; <span data-key="role-soft">軟體開發</span> / &gt;
+    </span>
+    <span class="profile-role">
+        &lt; <span data-key="role-ml">機器學習</span> / &gt;
+    </span>
+    <span class="profile-role">
+        &lt; <span data-key="role-llm">大語言模型</span> / &gt;
+    </span>
+</div>
         </div>
 
         <ul class="nav-menu">
-            <li class="nav-item"><a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>首頁</span></a></li>
-            <li class="nav-item"><a href="#about" class="nav-link"><i class="fas fa-user"></i><span>關於我</span></a></li>
-            <li class="nav-item"><a href="#portfolio" class="nav-link"><i class="fas fa-laptop-code"></i><span>專案</span></a></li>
-            <li class="nav-item"><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i><span>經歷</span></a></li>
-            <li class="nav-item"><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i><span>證書成就</span></a></li>
-        </ul>
+    <li class="nav-item"><a href="#home" class="nav-link active"><i class="fas fa-home"></i><span data-key="nav-home">首頁</span></a></li>
+    <li class="nav-item"><a href="#about" class="nav-link"><i class="fas fa-user"></i><span data-key="nav-about">關於我</span></a></li>
+    <li class="nav-item"><a href="#portfolio" class="nav-link"><i class="fas fa-laptop-code"></i><span data-key="nav-portfolio">專案</span></a></li>
+    <li class="nav-item"><a href="#experience" class="nav-link"><i class="fas fa-briefcase"></i><span data-key="nav-exp">經歷</span></a></li>
+    <li class="nav-item"><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i><span data-key="nav-cert">證書成就</span></a></li>
+</ul>
 
         <div class="social-links">
-            <div class="social-btn" title="Email">
-                <i class="fas fa-envelope"></i>
-                <span class="popover">jerry0021014@gmail.com</span>
-            </div>
-            
-            <div class="social-btn" title="Phone">
-                <i class="fas fa-phone"></i>
-                <span class="popover">0935627598</span>
-            </div>
-        </div>
-    </nav>
+        <div class="social-btn" title="Email"><i class="fas fa-envelope"></i><span class="popover">jerry0021014@gmail.com</span></div>
+        <div class="social-btn" title="Phone"><i class="fas fa-phone"></i><span class="popover">0935627598</span></div>
+    </div>
+</nav>
 
-    <main class="main-content">
-        
+<main class="main-content">
         <section id="home" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
             <h1 class="pop-in delay-1" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.2; margin-bottom: 20px;">
                 Hello, I'm <span style="color: var(--accent-color);">Caelan</span>.<br>
-                AI Application Developer.
+                <span data-key="home-role">AI Application Developer.</span>
             </h1>
-            <p class="pop-in delay-2" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 40px;">
+            <p class="pop-in delay-2" data-key="home-desc" style="max-width: 600px; margin-bottom: 40px; color: var(--text-secondary);">
                 專注於將大語言模型 (LLM) 與 RAG 技術轉化為實際的商業解決方案。具備全端開發能力與國際實習視野。
             </p>
-            <a href="#portfolio" class="pop-in delay-3" style="width: fit-content; padding: 12px 30px; background: var(--accent-color); color: #000; text-decoration: none; border-radius: 30px; font-weight: 700; transition: 0.3s;">
+            <a href="#portfolio" class="pop-in delay-3" data-key="btn-view" style="width: fit-content; padding: 12px 30px; background: var(--accent-color); color: #000; text-decoration: none; border-radius: 30px; font-weight: 700; transition: 0.3s;">
                 查看專案 <i class="fas fa-arrow-right"></i>
             </a>
         </section>
 
+
+
+      
+
         <section id="about">
-            <h2 class="section-title"><i class="fas fa-user"></i> 關於我</h2>
-            <div class="about-text">
+           <h2 class="section-title">
+    <i class="fas fa-user"></i> 
+    <span data-key="nav-about">關於我</span>
+</h2>
+            <div class="about-text"data-key="about-p">
                 <p>我叫顏子恩，畢業於亞洲大學資訊傳播碩士，主要專注在人工智慧和大語言模型應用開發。
 我熟悉大語言模型應用、網頁系統開發和資料庫處理。曾在馬來西亞光華日報實習，負責網頁系統開發，解決效能與安全問題，也參與過私人醫療診所的 ERP 產學合作專案，負責介面設計、資料流程優化與簡訊通知功能開發。這些經驗讓我熟悉跨領域系統整合，並學會如何與不同團隊有效溝通合作。
 我的碩士論文是做「RAG 系統結合虛擬數位人物」，開發完整的問答系統與企業知識整合平台，提升資訊檢索精準度和使用者互動體驗。
@@ -354,7 +501,7 @@
 </p>
             </div>
             
-            <h3 style="margin-bottom: 25px;">擅長程式語言(Programming Skills)</h3>
+            <h3 style="margin-bottom: 25px;"  data-key="skill-title">擅長程式語言</h3>
             <div class="skills-grid">
                 
                 <div class="skill-item">
@@ -461,16 +608,19 @@
         </section>
 
         <section id="portfolio">
-    <h2 class="section-title"><i class="fas fa-laptop-code"></i> 精選專案</h2>
+    <h2 class="section-title">
+    <i class="fas fa-laptop-code"></i> 
+    <span data-key="pj-title">精選專案</span>
+</h2>
     <div class="portfolio-grid">
         <div class="project-card">
             <div class="project-img-box">
                 <img src="螢幕擷取畫面 2025-06-09 195610.png" alt="RAG System Architecture">
             </div>
             <div class="project-info">
-                <h3 class="project-title">RAG 企業知識問答系統</h3>
-                <p class="project-tech">Python · LangChain · LLM</p>
-                <p class="project-desc">碩士研究成果。整合本地 LLM 與向量資料庫，建立高準確度的企業內部知識檢索增強生成系統。</p>
+                <h3 class="project-title" data-key="pj1-t">RAG 企業知識問答系統</h3>
+                <p class="project-tech" >Python · LangChain · LLM</p>
+                <p class="project-desc" data-key="pj1-d">碩士研究成果。整合本地 LLM 與向量資料庫，建立高準確度的企業內部知識檢索增強生成系統。</p>
             </div>
         </div>
 
@@ -479,9 +629,9 @@
                 <img src="圖片_20260122233041.jpg" alt="CNN Face Recognition System">
             </div>
             <div class="project-info">
-                <h3 class="project-title">CNN 人臉識別門禁系統</h3>
+                <h3 class="project-title" data-key="pj2-t">CNN 人臉識別門禁系統</h3>
                 <p class="project-tech">MATLAB · Deep Learning</p>
-                <p class="project-desc">使用卷積神經網路訓練人臉模型，實現即時影像辨識與身份驗證，測試準確率達 99% 以上。</p>
+                <p class="project-desc" data-key="pj2-d">使用卷積神經網路訓練人臉模型，實現即時影像辨識與身份驗證，測試準確率達 99% 以上。</p>
             </div>
         </div>
 
@@ -490,9 +640,9 @@
                 <img src="螢幕擷取畫面 2026-01-23 160516.png" alt="360 Scene">
             </div>
             <div class="project-info">
-                <h3 class="project-title">3D線上場景</h3>
+                <h3 class="project-title" data-key="pj3-t">3D線上場景</h3>
                 <p class="project-tech">HTML · Panolens.js</p>
-                <p class="project-desc">利用360映像串接，製作台中市范特西文創園線上導覽場景。</p>
+                <p class="project-desc" data-key="pj3-d">利用360映像串接，製作台中市范特西文創園線上導覽場景。</p>
             </div>
         </div>
 
@@ -501,9 +651,9 @@
                 <img src="螢幕擷取畫面 2026-01-28 221645.png" alt="ERP System">
             </div>
             <div class="project-info">
-                <h3 class="project-title">診所 ERP 管理系統</h3>
+                <h3 class="project-title" data-key="pj4-t">診所 ERP 管理系統</h3>
                 <p class="project-tech">Full Stack · PHP · MySQL</p>
-                <p class="project-desc">產學合作計畫。開發包含掛號、病歷管理、庫存與營收報表的綜合管理系統。</p>
+                <p class="project-desc" data-key="pj4-d">產學合作計畫。開發包含掛號、病歷管理、庫存與營收報表的綜合管理系統。</p>
             </div>
         </div>
 
@@ -512,9 +662,9 @@
                 <img src="屏幕截图 2025-04-25 151820_0.png" alt="Knowledge Retrieval System">
             </div>
             <div class="project-info">
-                <h3 class="project-title">Web 數位企業知識檢索系統</h3>
+                <h3 class="project-title" data-key="pj5-t">Web 數位企業知識檢索系統</h3>
                 <p class="project-tech">HTML/CSS/JS · Python · MySQL · Flask</p>
-                <p class="project-desc">將 RAG 系統連接網頁前端，實現直覺且流暢的 AI 互動問答介面。</p>
+                <p class="project-desc" data-key="pj5-d">將 RAG 系統連接網頁前端，實現直覺且流暢的 AI 互動問答介面。</p>
             </div>
         </div>
 
@@ -523,9 +673,9 @@
                 <img src="屏幕截图 2025-04-25 151211_0.png" alt="Virtual Character Interaction">
             </div>
             <div class="project-info">
-                <h3 class="project-title">RAG 系統與虛擬人物互動</h3>
+                <h3 class="project-title" data-key="pj6-t">RAG 系統與虛擬人物互動</h3>
                 <p class="project-tech">Python · C# · Unity · Flask</p>
-                <p class="project-desc">結合 RAG 技術與 Unity 虛擬人物，創造具有企業知識背景的 3D 數位助理。</p>
+                <p class="project-desc" data-key="pj6-d">結合 RAG 技術與 Unity 虛擬人物，創造具有企業知識背景的 3D 數位助理。</p>
             </div>
         </div>
     </div> </section>
@@ -536,27 +686,31 @@
 
 
         <section id="experience">
-            <h2 class="section-title"><i class="fas fa-briefcase"></i> 工作經歷</h2>
+            <h2 class="section-title">
+    <i class="fas fa-briefcase"></i> 
+    
+    <span data-key="exp-title">工作經歷</span>
+</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <span class="time-badge">2023.08 - 2023.09</span>
-                    <h3 class="job-title">資訊系統工程師 (海外實習)</h3>
-                    <p class="company">光華日報社 | 馬來西亞</p>
-                    <div class="job-desc">
+                    <h3 class="job-title" data-key="exp1-t">網頁系統工程師 (海外實習)</h3>
+                    <p class="company" data-key="exp1-c">光華日報社 | 馬來西亞</p>
+                    <div class="job-desc"  >
                         <ul>
-                            <li>負責新聞網站前後端功能開發與維護。</li>
-                            <li>優化資料庫查詢效能，解決高併發時的系統瓶頸。</li>
+                            <li data-key="exp1-d">負責新聞網站前後端功能開發與維護。</li>
+                            <li data-key="exp1-d2">優化資料庫查詢效能，解決高併發時的系統瓶頸。</li>
                         </ul>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <span class="time-badge">2023.02 - 2023.07</span>
-                    <h3 class="job-title">系所電腦軟硬體管理</h3>
-                    <p class="company">亞洲大學</p>
-                    <div class="job-desc">
+                    <h3 class="job-title" data-key="exp2-t">系所電腦軟硬體管理</h3>
+                    <p class="company" data-key="exp2-c">亞洲大學</p>
+                    <div class="job-desc" >
                         <ul>
-                            <li>管理與維護系上電腦教室與伺服器設備。</li>
-                            <li>協助師生解決各類軟硬體技術問題。</li>
+                            <li data-key="exp2-d1">管理與維護系上電腦教室與伺服器設備。</li>
+                            <li data-key="exp2-d2">協助師生解決各類軟硬體技術問題。</li>
                         </ul>
                     </div>
                 </div>
@@ -564,64 +718,71 @@
         </section>
 
         <section id="certificates">
-            <h2 class="section-title"><i class="fas fa-certificate"></i> 專業證書與榮譽</h2>
+           <h2 class="section-title">
+    <i class="fas fa-certificate"></i> 
+    <span data-key="cert-section">專業證書與榮譽</span>
+</h2>
             <div class="cert-grid">
                 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="圖片_20250903233912.png" alt="NVIDIA RAG Agents">
                     </div>
-                    <div class="cert-title">NVIDIA：開發 RAG Agents 認證</div>
+                    <div class="cert-title" data-key="c1">NVIDIA：開發 RAG Agents 認證</div>
                 </div>
 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="圖片_20250903234035.jpg" alt="NVIDIA CUDA Python">
                     </div>
-                    <div class="cert-title">NVIDIA：CUDA Python 加速計算基礎</div>
+                    <div class="cert-title" data-key="c2">NVIDIA：CUDA Python 加速計算基礎</div>
                 </div>
 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="圖片_20251005134709.jpg" alt="Microsoft GenAI">
                     </div>
-                    <div class="cert-title">Microsoft：生成式 AI 職業技能基礎</div>
+                    <div class="cert-title" data-key="c3">Microsoft：生成式 AI 職業技能基礎</div>
                 </div>
 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="螢幕擷取畫面 2025-09-03 233604.png" alt="Phi Tau Phi Honor">
                     </div>
-                    <div class="cert-title">中華民國斐陶斐榮譽學會會員</div>
+                    <div class="cert-title" data-key="c4">中華民國斐陶斐榮譽學會會員</div>
                 </div>
 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="海外實習證明.jpg" alt="Overseas Internship">
                     </div>
-                    <div class="cert-title">馬來西亞光華日報：海外實習證明</div>
+                    <div class="cert-title" data-key="c5">馬來西亞光華日報：海外實習證明</div>
                 </div>
 
                 <div class="cert-card">
                     <div class="cert-img-box">
                         <img src="圖片_20250903234052.jpg" alt="Photography Cert">
                     </div>
-                    <div class="cert-title">Silicon Stone：攝影專業認證</div>
+                    <div class="cert-title" data-key="c6">Silicon Stone：攝影專業認證</div>
                 </div>
 
             </div>
         </section>
 
         <section id="appendices">
-            <h2 class="section-title"><i class="fas fa-medal"></i> 附加經歷</h2>
+            <h2 class="section-title">
+    <i class="fas fa-medal"></i> 
+    
+    <span data-key="other-title">附加經歷</span>
+</h2>
             <div class="appendix-list">
                 <div class="appendix-item">
                     <div class="appendix-img">
                         <img src="圖片_20260123000322.jpg" >
                     </div>
-                    <div class="appendix-content">
-                        <h3>台灣鐵人三項完成者</h3>
-                        <p>展現強大的意志力與體能挑戰。包含玉山主峰登頂、單車環島騎行 (9天8夜) 與泳渡日月潭。</p>
+                    <div class="appendix-content" >
+                        <h3 data-key="tri-t"  data-key="tri-t">台灣鐵人三項完成者</h3>
+                        <p data-key="tri-d" data-key="tri-d">展現強大的意志力與體能挑戰。包含玉山主峰登頂、單車環島騎行 (9天8夜) 與泳渡日月潭。</p>
                     </div>
                 </div>
                 <div class="appendix-item">
@@ -629,8 +790,8 @@
                           <img src="圖片_20260123000336.jpg" >
                     </div>
                     <div class="appendix-content">
-                        <h3>美國 Jordan 籃球營總冠軍</h3>
-                        <p>參與國際級籃球訓練營，在團隊競技中展現合作精神與領導能力，最終與隊友共同贏得總冠軍殊榮。</p>
+                        <h3 data-key="jor-t" data-key="jor-t">美國 Jordan 籃球營總冠軍</h3>
+                        <p data-key="jor-d" data-key="jor-d">參與國際級籃球訓練營，在團隊競技中展現合作精神與領導能力，最終與隊友共同贏得總冠軍殊榮。</p>
                     </div>
                 </div>
             </div>
@@ -652,6 +813,158 @@
                 if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
             });
         });
+
+
+
+const i18n = {
+    'zh': {
+        // 側邊導覽
+        'nav-home': '首頁',
+        'nav-about': '關於我',
+        'nav-portfolio': '專案',
+        'nav-exp': '經歷',
+        'nav-cert': '證書成就',
+
+        // 角色標籤
+        'role-web': '網頁系統開發',
+        'role-soft': '軟體開發',
+        'role-ml': '機器學習',
+        'role-llm': '大語言模型',
+
+        // 首頁 Home
+        'home-role': 'AI Application Developer.',
+        'home-desc': '專注於將大語言模型 (LLM) 與 RAG 技術轉化為實際的商業解決方案。具備全端開發能力與國際實習視野。',
+        'btn-view': '查看專案',
+
+        // 關於我 About
+        'about-title': '關於我',
+        'about-p': '我叫顏子恩，畢業於亞洲大學資訊傳播碩士，主要專注在人工智慧和大語言模型應用開發。我熟悉大語言模型應用、網頁系統開發和資料庫處理。曾在馬來西亞光華日報實習，負責網頁系統開發，解決效能與安全問題，也參與過私人醫療診所的 ERP 產學合作專案，負責介面設計、資料流程優化與簡訊通知功能開發。這些經驗讓我熟悉跨領域系統整合，並學會如何與不同團隊有效溝通合作。我的碩士論文是做「RAG 系統結合虛擬數位人物」，開發完整的問答系統與企業知識整合平台，提升資訊檢索精準度和使用者互動體驗。我認為自己有三個特質：重視溝通與協作、能獨立完成任務，以及勇於挑戰新技術。',
+        'skill-title': '擅長程式語言 (Programming Skills)',
+
+        // 精選專案 Portfolio
+        'pj-title': '精選專案',
+        'pj1-t': 'RAG 企業知識問答系統',
+        'pj1-d': '碩士研究成果。整合本地 LLM 與向量資料庫，建立高準確度的企業內部知識檢索增強生成系統。',
+        'pj2-t': 'CNN 人臉識別門禁系統',
+        'pj2-d': '使用卷積神經網路訓練人臉模型，實現即時影像辨識與身份驗證，測試準確率達 99% 以上。',
+        'pj3-t': '3D線上場景',
+        'pj3-d': '利用 360 映像串接，製作台中市范特西文創園線上導覽場景。',
+        'pj4-t': '診所 ERP 管理系統',
+        'pj4-d': '產學合作計畫。開發包含掛號、病歷管理、庫存與營收報表的綜合管理系統。',
+        'pj5-t': 'Web 數位企業知識檢索系統',
+        'pj5-d': '將 RAG 系統連接網頁前端，實現直覺且流暢的 AI 互動問答介面。',
+        'pj6-t': 'RAG 系統與虛擬人物互動',
+        'pj6-d': '結合 RAG 技術與 Unity 虛擬人物，創造具有企業知識背景的 3D 數位助理。',
+
+        // 工作經歷 Experience
+        'exp-title': '工作經歷',
+        'exp1-t': '網頁系統工程師 (海外實習)',
+        'exp1-c': '光華日報社 | 馬來西亞',
+        'exp1-d1': '負責新聞網站前後端功能開發與維護。',
+        'exp1-d2': '優化資料庫查詢效能，解決高併發系統瓶頸。',
+        'exp2-t': '系所電腦軟硬體管理',
+        'exp2-c': '亞洲大學',
+        'exp2-d1': '管理與維護系上電腦教室與伺服器設備。',
+        'exp2-d2': '協助師生解決各類軟硬體技術問題。',
+
+        // 證書 Certificates
+        'cert-section': '專業證書與榮譽',
+        'c1': 'NVIDIA：開發 RAG Agents 認證',
+        'c2': 'NVIDIA：CUDA Python 加速計算基礎',
+        'c3': 'Microsoft：生成式 AI 職業技能基礎',
+        'c4': '中華民國斐陶斐榮譽學會會員',
+        'c5': '馬來西亞光華日報：海外實習證明',
+        'c6': 'Silicon Stone：攝影專業認證',
+
+        // 附加經歷 Appendices
+        'other-title': '附加經歷',
+        'tri-t': '台灣鐵人三項完成者',
+        'tri-d': '展現強大的意志力與體能挑戰。包含玉山主峰登頂、單車環島騎行 (9天8夜) 與泳渡日月潭。',
+        'jor-t': '美國 Jordan 籃球營總冠軍',
+        'jor-d': '參與國際級籃球訓練營，在團隊競技中展現合作精神與領導能力，贏得總冠軍殊榮。'
+    },
+    'en': {
+        // Sidebar Navigation
+        'nav-home': 'Home',
+        'nav-about': 'About',
+        'nav-portfolio': 'Portfolio',
+        'nav-exp': 'Experience',
+        'nav-cert': 'Honors',
+
+        // Role Tags
+        'role-web': 'Web System Dev',
+        'role-soft': 'Software Dev',
+        'role-ml': 'Machine Learning',
+        'role-llm': 'LLM & RAG',
+
+        // Hero Section
+        'home-role': 'AI Application Developer.',
+        'home-desc': 'Specializing in transforming LLM and RAG technologies into practical business solutions. Full-stack capability with an international perspective.',
+        'btn-view': 'View Projects',
+
+        // About Me
+        'about-title': 'About Me',
+        'about-p': 'My name is Yen Tzu-En. I hold a Master’s degree in Information and Communication from Asia University, with a core focus on AI and Large Language Model (LLM) application development.I possess a strong technical background in LLM applications, web system development, and database management. During my internship at Kwong Wah Yit Poh in Malaysia, I was responsible for web development, specifically addressing performance and security issues. I also participated in an industry-academic collaboration project for a private medical clinic’s ERP system, where I handled UI design, data workflow optimization, and SMS notification integration. These experiences sharpened my skills in cross-domain system integration and taught me how to communicate effectively within diverse teams.For my Master’s thesis, I developed a RAG (Retrieval-Augmented Generation) system integrated with a virtual digital human. I built a comprehensive Q&A system and corporate knowledge platform aimed at improving information retrieval accuracy and user interaction.I would describe myself through three key traits: I value communication and collaboration, I am capable of working independently, and I am always eager to embrace new technologies."',
+        'skill-title': 'Programming Skills',
+
+        // Portfolio
+        'pj-title': 'Featured Projects',
+        'pj1-t': 'Enterprise RAG Q&A System',
+        'pj1-d': 'Master\'s research. Integrated local LLMs with vector databases for highly accurate internal knowledge retrieval.',
+        'pj2-t': 'CNN Face Recognition System',
+        'pj2-d': 'Trained CNN models for real-time video identification and identity verification with 99%+ accuracy.',
+        'pj3-t': '3D Interactive Online Scene',
+        'pj3-d': 'Utilized 360-degree imagery to create an online tour for Taichung Fantasy Cultural Park.',
+        'pj4-t': 'Medical ERP System',
+        'pj4-d': 'Industry-academic project. Developed a system for registration, medical records, and inventory tracking.',
+        'pj5-t': 'Digital Enterprise Retrieval Web',
+        'pj5-d': 'Connected RAG systems to web frontends for a seamless AI-powered interactive Q&A interface.',
+        'pj6-t': 'RAG with Virtual Character',
+        'pj6-d': 'Combined RAG technology with Unity characters to create 3D digital assistants with corporate knowledge.',
+
+        // Work Experience
+        'exp-title': 'Work Experience',
+        'exp1-t': 'Information System Engineer (Intern)',
+        'exp1-c': 'Kwong Wah Yit Poh | Malaysia',
+        'exp1-d1': 'Developed and maintained full-stack features for a news website.',
+        'exp1-d2': 'Optimized database performance to solve high-concurrency bottlenecks.',
+        'exp2-t': 'IT Infrastructure Administrator',
+        'exp2-c': 'Asia University',
+        'exp2-d1': 'Managed and maintained computer labs and server infrastructure.',
+        'exp2-d2': 'Provided technical support for software and hardware to staff and students.',
+
+        // Certificates
+        'cert-section': 'Certificates & Honors',
+        'c1': 'NVIDIA: Building RAG Agents Certification',
+        'c2': 'NVIDIA: Fundamentals of CUDA Python',
+        'c3': 'Microsoft: Generative AI Career Essentials',
+        'c4': 'Phi Tau Phi Scholastic Honor Society Member',
+        'c5': 'Overseas Internship Certificate (Malaysia)',
+        'c6': 'Silicon Stone: Photography Professional Certification',
+
+        // Appendices
+        'other-title': 'Other Experiences',
+        'tri-t': 'Taiwan Triathlon Finisher',
+        'tri-d': 'Demonstrated willpower and endurance. Completed Mt. Jade Summit, Cycling around Taiwan (9 days), and Sun Moon Lake Swim.',
+        'jor-t': 'Jordan Flight School Champion (USA)',
+        'jor-d': 'Participated in a world-class basketball camp, showcasing leadership to win the overall championship.'
+    }
+};
+
+const toggle = document.getElementById('lang-toggle');
+
+toggle.addEventListener('change', () => {
+    // 勾選為英文 (en)，未勾選為中文 (zh)
+    const lang = toggle.checked ? 'en' : 'zh';
+    
+    // 尋找所有具備 data-key 屬性的元素並替換內容
+    document.querySelectorAll('[data-key]').forEach(elem => {
+        const key = elem.getAttribute('data-key');
+        if (i18n[lang][key]) {
+            elem.textContent = i18n[lang][key];
+        }
+    });
+});
     </script>
 </body>
 </html>
