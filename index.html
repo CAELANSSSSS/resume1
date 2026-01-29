@@ -419,45 +419,88 @@ input:checked + .slider:before {
 
 
 
+
+
+
 /* === 手機版底部懸浮導航膠囊樣式 === */
-@media (max-width: 768px) {
-    /* 強制覆蓋原本的隱藏設定並重新定位 */
+@media (max-width: 768px) { 
+    /* === 社交連結全屏適配與顯示修復 === */
     .social-links {
-        display: flex !important;           /* 顯示社交連結 */
-        position: fixed !important;          /* 固定在螢幕上，不隨捲動消失 */
-        bottom: -720px !important;             /* 距離底部 25 像素 */
-        left: 50% !important;                /* 水平定位起點為螢幕 50% */
-        transform: translateX(-50%) !important; /* 向左回推自身寬度的一半，達成精確置中 */
-        top: auto !important;                /* 取消可能繼承的頂部定位 */
-        
-        /* 視覺美化：玻璃擬態設計 */
-        background: rgba(18, 18, 20, 0.85);  /* 半透明深色背景 */
-        backdrop-filter: blur(15px);         /* 高強度毛玻璃模糊特效，顯得非常高級 */
-        -webkit-backdrop-filter: blur(15px); /* 相容 Safari 瀏覽器 */
-        
-        padding: 10px 25px;                  /* 內邊距，撐出膠囊感 */
-        border-radius: 50px;                 /* 完美的膠囊圓角 */
-        border: 1px solid rgba(0, 242, 255, 0.3); /* 霓虹藍細邊框，呼應主題色 */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                    0 0 10px rgba(0, 242, 255, 0.1); /* 底部陰影與微弱光暈 */
-        
-        gap: 25px;                           /* 兩個按鈕之間的間距 */
-        z-index: 9999 !important;            /* 確保層級最高，不被內容覆蓋 */
-        margin: 0 !important;                /* 移除所有外部邊距影響 */
+        display: flex;                /* 使用彈性佈局排列按鈕 */
+        justify-content: center;      /* 水平居中排列 */
+        gap: 30px;                    /* 按鈕之間的間距 */
+        margin-top: auto;             /* 桌機版自動推向底部 */
+        padding-bottom: 25px;         /* 底部內邊距 */
+        position: relative;           /* 設定相對定位基準 */
+        z-index: 10000;               /* 確保社交欄位在所有內容的最頂層 */
     }
 
-    /* 調整按鈕大小以利手機觸控 */
-    .social-btn {
-        width: 46px !important;
-        height: 46px !important;
-        background: rgba(255, 255, 255, 0.05); /* 微弱的按鈕底色 */
-        border: 1px solid rgba(0, 242, 255, 0.2);
-    }
-
-    /* 手機版不顯示氣泡文字彈窗，避免遮擋畫面 */
+    /* 初始隱藏狀態修復：設定提示氣泡 (Popover) 的外觀 */
     .social-links .popover {
-        display: none !important;
+        display: block !important;    /* 強制顯示區塊化 */
+        position: absolute !important; /* 相對於按鈕進行絕對定位 */
+        background: #121214 !important; /* 背景顏色使用深黑色 */
+        color: #00f2ff !important;       /* 文字顏色使用霓虹藍 */
+        border: 1px solid #00f2ff;     /* 設定與文字同色的邊框 */
+        padding: 30px 10px;           /* 氣泡內部的填充空間 */
+        border-radius: 8px;           /* 設定氣泡圓角 */
+        font-size: 1rem;            /* 設定字體大小 */
+        white-space: nowrap;          /* 強制文字不換行 */
+        z-index: 10001;               /* 層級必須高於社交欄位本體 */
+        
+        /* 關鍵：預設完全透明且縮小 (向下偏移 10px 準備彈出動畫) */
+        opacity: 0 !important;        /* 預設透明度為 0 */
+        visibility: hidden !important; /* 預設為不可見，防止誤觸 */
+        transform: translateY(10px);  /* 預設垂直向下偏移 10px */
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 設定平滑彈跳動畫 */
+        pointer-events: none;         /* 隱藏時忽略點擊事件 */
     }
+
+    /* 桌機懸停 (Hover) 與 手機點擊 (Active Class) 觸發後的顯示狀態 */
+    .social-btn:hover .popover,
+    .social-btn.active .popover {
+        opacity: 1 !important;        /* 變為完全不透明 */
+        visibility: visible !important; /* 變為可見狀態 */
+        transform: translateY(0) !important; /* 回到原位 (完成彈出效果) */
+        pointer-events: auto;         /* 顯示後允許點擊或選取文字 */
+    }
+
+
+
+
+
+
+    /* === 手機版專用定位：修復負值跑位問題 === */
+    @media (max-width: 768px) {
+        .social-links {
+            display: flex !important;           /* 手機版強制顯示 */
+            position: fixed !important;          /* 手機版改為固定定位，跟隨滑動 */
+            
+            /* 注意：-720px 會讓內容掉到螢幕外面，建議改為 30px 才能看到內容 */
+            bottom: -720px !important;           /* 距離螢幕底部的距離 (請改為正值) */
+            
+            left: 50% !important;                /* 水平定位起點為螢幕正中央 */
+            transform: translateX(-50%) !important; /* 精確向左回推一半寬度，達成水平居中 */
+            top: auto !important;                /* 取消可能繼承的頂部定位 */
+            background: rgba(18, 18, 20, 0.95);  /* 手機版使用高不透明度背景 */
+            backdrop-filter: blur(15px);         /* 加入毛玻璃模糊效果 */
+            padding: 12px 25px;                  /* 膠囊容器內邊距 */
+            border-radius: 50px;                 /* 設定為完整的圓角膠囊外觀 */
+            border: 1px solid rgba(0, 242, 255, 0.4); /* 淺藍色半透明邊框 */
+        }
+
+        /* 手機版氣泡內容位置修正：顯示在按鈕正上方 */
+        .social-links .popover {
+            bottom: 70px !important;             /* 氣泡出現在按鈕上方 70px 處 */
+            left: 50% !important;                /* 氣泡水平居中於按鈕 */
+            transform: translateX(-50%) translateY(10px) !important; /* 初始偏移位置 */
+        }
+
+        /* 手機點擊後，氣泡回位顯示 */
+        .social-btn.active .popover {
+            transform: translateX(-50%) translateY(0px) !important; /* 點擊後回到顯示位置 */
+        }
+    } 
 }
 
 
@@ -514,9 +557,15 @@ input:checked + .slider:before {
 </ul>
 
        <div class="social-links">
-        <div class="social-btn" title="Email"><i class="fas fa-envelope"></i><span class="popover">jerry0021014@gmail.com</span></div>
-        <div class="social-btn" title="Phone"><i class="fas fa-phone"></i><span class="popover">0935627598</span></div>
+    <div class="social-btn" title="Email" onclick="this.classList.toggle('active')">
+        <i class="fas fa-envelope"></i>
+        <span class="popover">jerry0021014@gmail.com</span>
     </div>
+    <div class="social-btn" title="Phone" onclick="this.classList.toggle('active')">
+        <i class="fas fa-phone"></i>
+        <span class="popover">0935627598</span>
+    </div>
+</div>
 
 </nav>
 
@@ -1000,6 +1049,43 @@ const i18n = {
         'jor-d': 'Participated in a world-class basketball camp, showcasing leadership to win the overall championship.'
     }
 };
+
+
+
+
+
+
+
+
+// 點擊社交按鈕切換顯示內容
+document.querySelectorAll('.social-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation(); // 防止點擊事件傳遞到背景
+        const isActive = this.classList.contains('active');
+        
+        // 先關閉所有其他的
+        document.querySelectorAll('.social-btn').forEach(b => b.classList.remove('active'));
+        
+        // 如果原本不是開啟狀態，就開啟目前的
+        if (!isActive) {
+            this.classList.add('active');
+        }
+    });
+});
+
+// 點擊頁面其他地方就收起
+document.addEventListener('click', () => {
+    document.querySelectorAll('.social-btn').forEach(b => b.classList.remove('active'));
+});
+
+
+
+
+
+
+
+
+
 
 const toggle = document.getElementById('lang-toggle');
 
