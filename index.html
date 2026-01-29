@@ -415,25 +415,46 @@ input:checked + .slider:before {
 }
 
 
-/* === 手機版：社交連結固定在底部中間 === */
-@media (max-width: 768px) {
-    .social-links {
-        display: flex !important;       /* 覆寫原本的隱藏 */
-        position: fixed;
-        bottom: 20px;                   /* 距離底部高度，可自行調整 */
-        left: 50%;
-        transform: translateX(-50%);
-        gap: 20px;
 
-        background: rgba(18, 18, 20, 0.9);
-        backdrop-filter: blur(8px);
-        padding: 10px 20px;
-        border-radius: 999px;
-        border: 1px solid rgba(0, 242, 255, 0.3);
-        z-index: 999;
+
+
+
+/* === 手機版底部懸浮導航膠囊樣式 === */
+@media (max-width: 768px) {
+    /* 強制覆蓋原本的隱藏設定並重新定位 */
+    .social-links {
+        display: flex !important;           /* 顯示社交連結 */
+        position: fixed !important;          /* 固定在螢幕上，不隨捲動消失 */
+        bottom: -820px !important;             /* 距離底部 25 像素 */
+        left: 50% !important;                /* 水平定位起點為螢幕 50% */
+        transform: translateX(-50%) !important; /* 向左回推自身寬度的一半，達成精確置中 */
+        top: auto !important;                /* 取消可能繼承的頂部定位 */
+        
+        /* 視覺美化：玻璃擬態設計 */
+        background: rgba(18, 18, 20, 0.85);  /* 半透明深色背景 */
+        backdrop-filter: blur(15px);         /* 高強度毛玻璃模糊特效，顯得非常高級 */
+        -webkit-backdrop-filter: blur(15px); /* 相容 Safari 瀏覽器 */
+        
+        padding: 10px 25px;                  /* 內邊距，撐出膠囊感 */
+        border-radius: 50px;                 /* 完美的膠囊圓角 */
+        border: 1px solid rgba(0, 242, 255, 0.3); /* 霓虹藍細邊框，呼應主題色 */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                    0 0 10px rgba(0, 242, 255, 0.1); /* 底部陰影與微弱光暈 */
+        
+        gap: 25px;                           /* 兩個按鈕之間的間距 */
+        z-index: 9999 !important;            /* 確保層級最高，不被內容覆蓋 */
+        margin: 0 !important;                /* 移除所有外部邊距影響 */
     }
 
-    /* 手機版不顯示 tooltip，避免遮擋 */
+    /* 調整按鈕大小以利手機觸控 */
+    .social-btn {
+        width: 46px !important;
+        height: 46px !important;
+        background: rgba(255, 255, 255, 0.05); /* 微弱的按鈕底色 */
+        border: 1px solid rgba(0, 242, 255, 0.2);
+    }
+
+    /* 手機版不顯示氣泡文字彈窗，避免遮擋畫面 */
     .social-links .popover {
         display: none !important;
     }
@@ -442,6 +463,11 @@ input:checked + .slider:before {
 
 
     </style>
+
+
+
+
+    
 </head>
 <body>
 
@@ -487,10 +513,11 @@ input:checked + .slider:before {
     <li class="nav-item"><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i><span data-key="nav-cert">證書成就</span></a></li>
 </ul>
 
-        <div class="social-links">
+       <div class="social-links">
         <div class="social-btn" title="Email"><i class="fas fa-envelope"></i><span class="popover">jerry0021014@gmail.com</span></div>
         <div class="social-btn" title="Phone"><i class="fas fa-phone"></i><span class="popover">0935627598</span></div>
     </div>
+
 </nav>
 
 <main class="main-content">
@@ -990,4 +1017,7 @@ toggle.addEventListener('change', () => {
 });
     </script>
 </body>
+
+    
+
 </html>
