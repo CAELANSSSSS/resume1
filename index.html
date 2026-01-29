@@ -415,6 +415,29 @@ input:checked + .slider:before {
 }
 
 
+/* === 手機版：社交連結固定在底部中間 === */
+@media (max-width: 768px) {
+    .social-links {
+        display: flex !important;       /* 覆寫原本的隱藏 */
+        position: fixed;
+        bottom: 20px;                   /* 距離底部高度，可自行調整 */
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 20px;
+
+        background: rgba(18, 18, 20, 0.9);
+        backdrop-filter: blur(8px);
+        padding: 10px 20px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 242, 255, 0.3);
+        z-index: 999;
+    }
+
+    /* 手機版不顯示 tooltip，避免遮擋 */
+    .social-links .popover {
+        display: none !important;
+    }
+}
 
 
 
