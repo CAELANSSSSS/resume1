@@ -790,7 +790,20 @@ input:checked + .slider:before {
     
     <span data-key="exp-title">工作經歷</span>
 </h2>
+
             <div class="timeline">
+                <div class="timeline-item">
+                    <span class="time-badge">在職中</span>
+                    <h3 class="job-title" data-key="exp1-FF">程式設計師</h3>
+                    <p class="company" data-key="exp1-F">台新國際銀行</p>
+                    <div class="job-desc">
+                        <ul>
+                            <li data-key="exp1-F1">股票質借系統</li>
+                            <li data-key="exp1-F2">私人銀行系統</li>
+                            <li data-key="exp1-F3">債務協商系統</li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="timeline-item">
                     <span class="time-badge">2023.08 - 2023.09</span>
                     <h3 class="job-title" data-key="exp1-t">網頁系統工程師 (海外實習)</h3>
@@ -957,9 +970,14 @@ const i18n = {
 
         // 工作經歷 Experience
         'exp-title': '工作經歷',
+        'exp1-FF': '程式設計師',
+        'exp1-F': '台新國際銀行',
+        'exp1-F1': '股票質借系統',
+        'exp1-F2': '私人銀行系統',
+        'exp1-F3': '債務協商系統',
         'exp1-t': '網頁系統工程師 (海外實習)',
         'exp1-c': '光華日報社 | 馬來西亞',
-        'exp1-d1': '負責新聞網站前後端功能開發與維護。',
+        'exp1-d': '負責新聞網站前後端功能開發與維護。',
         'exp1-d2': '優化資料庫查詢效能，解決高併發系統瓶頸。',
         'exp2-t': '系所電腦軟硬體管理',
         'exp2-c': '亞洲大學',
@@ -1023,9 +1041,14 @@ const i18n = {
 
         // Work Experience
         'exp-title': 'Work Experience',
+        'exp1-FF': 'Software Engineer',
+        'exp1-F': 'Taishin International Bank',
+        'exp1-F1': 'Stock Collateral System',
+        'exp1-F2': 'Private Banking System',
+        'exp1-F3': 'Debt Mediation System',
         'exp1-t': 'Information System Engineer (Intern)',
         'exp1-c': 'Kwong Wah Yit Poh | Malaysia',
-        'exp1-d1': 'Developed and maintained full-stack features for a news website.',
+        'exp1-d': 'Developed and maintained full-stack features for a news website.',
         'exp1-d2': 'Optimized database performance to solve high-concurrency bottlenecks.',
         'exp2-t': 'IT Infrastructure Administrator',
         'exp2-c': 'Asia University',
